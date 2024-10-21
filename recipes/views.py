@@ -1,12 +1,12 @@
-from utils.recipes.factory import make_recipe
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from recipes.models import Recipe
 
 
 def home(request):
     recipes = Recipe.objects.filter(
-        is_published=True,
+        is_published=True
     ).order_by('-id')
+
     return render(request, 'recipes/pages/home.html',
                   context={'recipes': recipes, })
 
@@ -25,11 +25,7 @@ def category(request, category_id):
 
 
 def recipe(request, id):
-
-    recipe = Recipe.objects.filter(
-        pk=id,
-        is_published=True,
-    ).order_by('-id').first()
+    recipe = get_object_or_404(Recipe, pk=id, is_published=True,)
 
     return render(request, 'recipes/pages/recipe-view.html',
                   context={
